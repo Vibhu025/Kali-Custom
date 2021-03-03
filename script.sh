@@ -1,9 +1,8 @@
 #!/bin/bash
 
 print () {
-		echo ""
+		echo "[----------------------------------------------------------------------------------]"
         echo "[+]" $1 
-        echo ""
 }
 
 ----------------------------------------------------
@@ -32,6 +31,8 @@ print "Updating and Upgrading System to Latest Version"
 echo "deb https://http.kali.org/kali kali-rolling main non-free contrib" | sudo tee /etc/apt/sources.list;
 sudo apt-get update && sudo apt-get -y full-upgrade && sudo apt-get autoremove -y && sudo apt-get autoclean;
 print "Done"
+
+
 
 
 
