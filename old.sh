@@ -1,36 +1,15 @@
 #!/bin/bash
 
 print () {
-		echo "[----------------------------------------------------------------------------------]"
         echo "[+]" $1 
-        echo "[----------------------------------------------------------------------------------]"
 }
 
-# ----------------------------------------------------
-# exit when any command fails
-set -e
-# ----------------------------------------------------
-# To be Done When using Kali 2019.3 or Previous Version
-
-# gpg --keyserver hkp://keys.gnupg.net --recv-key 7D8D0BF6;
-# gpg --fingerprint 7D8D0BF6;
-# gpg -a --export 7D8D0BF6 | apt-key add - ;
-# ----------------------------------------------------
-# Change to XFCE
-
-# sudo apt update && sudo apt install -y kali-desktop-xfce
-# update-alternatives --config x-session-manager
-# select Xfce’s option
-# ----------------------------------------------------
-
-
-print "Getting Sudo Permissions to Normal User"
+print "Getting Necessary Permissions"
 sudo apt install -y kali-grant-root && sudo dpkg-reconfigure kali-grant-root
 print "Done"
 
-print "Updating and Upgrading System to Latest Version"
-echo "deb https://http.kali.org/kali kali-rolling main non-free contrib" | sudo tee /etc/apt/sources.list;
-sudo apt-get update && sudo apt-get -y full-upgrade && sudo apt-get autoremove -y && sudo apt-get autoclean;
+print "Updating and Upgrading System"
+sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get dist-upgrade -y && sudo apt-get autoremove -y;
 print "Done"
 
 print "Installing Necessary Tools"
@@ -44,16 +23,26 @@ cd ~/Downloads;
 goversion=$(curl https://golang.org/doc/install -s | grep -i "var goVersion =" | grep '".*"' -o | sed 's/"//g');
 wget https://storage.googleapis.com/golang/$goversion.linux-amd64.tar.gz;
 sudo tar -C /usr/local -xzf $goversion.linux-amd64.tar.gz;
-echo "" >> ~/.zshrc;
-echo "# Adding Go to PATH Enviorment" >> ~/.zshrc;
-echo "" >> ~/.zshrc;
-echo "export GOPATH=/root/go" >> ~/.zshrc;
-echo "export GOROOT=/usr/local/go" >>  ~/.zshrc;
-echo "PATH=$PATH:$GOROOT/bin/:$GOPATH/bin" >> ~/.zshrc;
-source ~/.zshrc;
+if [[ $(echo $0)=="/bin/bash" ]]
+then
+        echo "" >> ~/.bashrc;
+        echo "# Adding Go to PATH Enviorment" >> ~/.bashrc;
+        echo "" >> ~/.bashrc;
+        echo "export GOROOT=/usr/local/go" >> ~/.bashrc;
+        echo "export GOPATH=$HOME/go" >> ~/.bashrc;
+        echo "export PATH=$GOPATH/bin:$GOROOT/bin:$PATH" >> ~/.bashrc;
+        source ~/.bashrc;
+else
+        echo "" >> ~/.zshrc;
+        echo "# Adding Go to PATH Enviorment" >> ~/.zshrc;
+        echo "" >> ~/.zshrc;
+        echo "export GOROOT=/usr/local/go" >> ~/.zshrc;
+        echo "export GOPATH=$HOME/go" >>  ~/.zshrc;
+        echo "export PATH=$GOPATH/bin:$GOROOT/bin:$PATH" >> ~/.zshrc;
+        source ~/.zshrc;
+fi
 sudo rm -r $goversion.linux-amd64.tar.gz;
 print "Done"
-
 
 print "Installing Discord"
 cd ~/Downloads;
@@ -99,6 +88,7 @@ sudo mv ghidra* Ghidra;
 sudo ln -s /opt/tools/Ghidra/ghidraRun /usr/sbin/ghidra;
 print "Done"
 
+
 print "Installing Tools"
 sudo gem install evil-winrm;
 print "Done"
@@ -109,10 +99,27 @@ cd /opt/enum_scripts;
 sudo git clone https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite.git;
 print "Done"
 
-echo "" >> ~/.zshrc;
-echo "# Adding Custom Alias" >> ~/.zshrc;
-echo "" >> ~/.zshrc;
-echo "alias update-system='sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get dist-upgrade -y'" >> ~/.zshrc;
-echo "alias install='sudo apt-get -y install '" >> ~/.zshrc;
-echo "alias lsa='ls -Alh'" >> ~/.zshrc;
-echo "alias copy='xclip -selection clipboard'" >> ~/.zshrc;
+print "Installing Gef for GDB"
+sudo sh -c "$(curl -fsSL http://gef.blah.cat/sh)";
+print "Done"
+
+print "Adding Alias"
+if [[ $(echo $0)=="bash" ]]
+then
+        echo "" >> ~/.bashrc;
+        echo "# Adding Custom Alias" >> ~/.bashrc;
+        echo "" >> ~/.bashrc;
+        echo "alias update-system='sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get dist-upgrade -y'" >> ~/.bashrc;
+        echo "alias install='sudo apt-get -y install '" >> ~/.bashrc;
+        echo "alias lsa='ls -Alh'" >> ~/.bashrc;
+        echo "alias copy='xclip -selection clipboard'" >> ~/.bashrc;
+else
+        echo "" >> ~/.zshrc;
+        echo "# Adding Custom Alias" >> ~/.zshrc;
+        echo "" >> ~/.zshrc;
+        echo "alias update-system='sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get dist-upgrade -y'" >> ~/.zshrc;
+        echo "alias install='sudo apt-get -y install '" >> ~/.zshrc;
+        echo "alias lsa='ls -Alh'" >> ~/.zshrc;
+        echo "alias copy='xclip -selection clipboard'" >> ~/.zshrc;
+fi
+
