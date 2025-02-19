@@ -19,6 +19,9 @@ echo "deb http://http.kali.org/kali kali-last-snapshot main contrib non-free non
 sudo apt-get update && sudo apt-get -y full-upgrade && sudo apt-get autoremove -y && sudo apt-get autoclean && sudo apt-get autoremove -y;
 print "Done"
 
+# If facing key expiry issue use
+# wget -q -O - https://archive.kali.org/archive-key.asc | sudo apt-key add
+
 print "Installing Necessary Tools"
 sudo apt-get install -y git python3-pip powershell sshuttle default-jdk apt-transport-https plank htop xclip steghide gdb binwalk checksec exiftool ruby seclists;
 sudo gzip -d /usr/share/wordlists/rockyou.txt.gz;
