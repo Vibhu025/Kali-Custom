@@ -6,24 +6,6 @@ print () {
         echo "[----------------------------------------------------------------------------------]"
 }
 
-# ----------------------------------------------------
-# exit when any command fails
-set -e
-# ----------------------------------------------------
-# To be Done When using Kali 2019.3 or Previous Version
-
-# gpg --keyserver hkp://keys.gnupg.net --recv-key 7D8D0BF6;
-# gpg --fingerprint 7D8D0BF6;
-# gpg -a --export 7D8D0BF6 | apt-key add - ;
-# ----------------------------------------------------
-# Change to XFCE
-
-# sudo apt update && sudo apt install -y kali-desktop-xfce
-# update-alternatives --config x-session-manager
-# select Xfce’s option
-# ----------------------------------------------------
-
-
 #print "Getting Sudo Permissions to Normal User"
 #sudo apt install -y kali-grant-root && sudo dpkg-reconfigure kali-grant-root
 #print "Done"
@@ -33,8 +15,8 @@ cp zshrc ~/.zshrc;
 print"Done"
 
 print "Updating and Upgrading System to Latest Version"
-echo "deb https://http.kali.org/kali kali-rolling main non-free contrib" | sudo tee /etc/apt/sources.list;
-sudo apt-get update && sudo apt-get -y full-upgrade && sudo apt-get autoremove -y && sudo apt-get autoclean;
+echo "deb http://http.kali.org/kali kali-last-snapshot main contrib non-free non-free-firmware" | sudo tee /etc/apt/sources.list
+sudo apt-get update && sudo apt-get -y full-upgrade && sudo apt-get autoremove -y && sudo apt-get autoclean && sudo apt-get autoremove -y;
 print "Done"
 
 print "Installing Necessary Tools"
@@ -82,9 +64,9 @@ cd /opt/enum_scripts;
 sudo git clone https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite.git;
 print "Done"
 
-print "Installing Sublime Text"
-wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add - ;
-echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list;
-sudo apt-get update && sudo apt-get install sublime-text;
-print "Done"
+#print "Installing Sublime Text"
+#wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add - ;
+#echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list;
+#sudo apt-get update && sudo apt-get install sublime-text;
+#print "Done"
 
